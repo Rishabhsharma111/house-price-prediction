@@ -1,7 +1,6 @@
 import streamlit as st
 import pickle
 import pandas as pd
-import os
 
 # -------------------------------
 # Page Config
@@ -34,10 +33,10 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 # -------------------------------
-# Load Model
+# Load Model (FIXED ✅)
 # -------------------------------
 model = pickle.load(open("model.pkl", "rb"))
-columns = pickle.load(open(os.path.join(BASE_DIR, "columns.pkl"), "rb"))
+columns = pickle.load(open("columns.pkl", "rb"))
 
 # -------------------------------
 # Branding
@@ -74,21 +73,24 @@ if st.button("Predict Price 💰"):
     else:
         with st.spinner("Analyzing property data... ⏳"):
 
+            # Create empty dataframe with all columns
             input_df = pd.DataFrame(columns=columns)
             input_df.loc[0] = 0
 
+            # Fill required inputs
             input_df["LotArea"] = lot_area
             input_df["OverallQual"] = overall_qual
             input_df["YearBuilt"] = year_built
             input_df["GrLivArea"] = gr_liv_area
 
+            # Prediction
             prediction = model.predict(input_df)[0]
 
             low = prediction * 0.9
             high = prediction * 1.1
 
             # -------------------------------
-            # Result Section (PRO 🔥)
+            # Result Section
             # -------------------------------
             st.markdown("### 💰 Prediction Result")
 
@@ -138,9 +140,10 @@ if "history" in st.session_state:
         st.write(f"{i+1}. ₹ {val:,.0f}")
 
 # -------------------------------
-# Reset Button
+# Reset Button (FIXED ✅)
 # -------------------------------
 if st.button("Reset 🔄"):
+    st.session_state.clear()
     st.rerun()
 
 # -------------------------------
