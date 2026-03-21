@@ -36,8 +36,7 @@ h1, h2, h3 {
 # -------------------------------
 # Load Model
 # -------------------------------
-BASE_DIR = os.path.dirname(__file__)
-model = pickle.load(open(os.path.join(BASE_DIR, "model.pkl"), "rb"))
+model = pickle.load(open("model.pkl", "rb"))
 columns = pickle.load(open(os.path.join(BASE_DIR, "columns.pkl"), "rb"))
 
 # -------------------------------
